@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState } from 'react';
 import axios from 'axios'
-function Login() {
+function Login({ onLogin }) {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
@@ -22,6 +22,7 @@ function Login() {
             alert('Bienvenido')
             setPassword('')
             localStorage.setItem('token', response.data.token)
+            onLogin()
         }
         catch (error) {
             alert(error.response?.data?.message || 'No se pudo iniciar sesión')
