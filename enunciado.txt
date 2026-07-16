@@ -1,0 +1,11 @@
+Consigna:
+Desarrollar un sistema de Login y Registro de usuarios.
+El examen debe incluir una API conectada a una base de datos para garantizar la persistencia de datos.
+
+Requisitos técnicos:
+
+Backend: API desarrollada con Node.js, Express y Sequelize.
+
+Frontend: Aplicación creada con React y Vite, conectada a la API, utilizando Material UI para la interfaz y aplicando componentización para una estructura ordenada y escalable.
+
+Recomendaciones: Tener una carpeta con API y CLIENT, utilizar un endpoint de tipo POST para el LOGIN y para el REGISTER

@@ -1,0 +1,52 @@
+const User = require("../models/User")
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
+const SECRET = 'misecreto'
+
+const getUsers = async (req, res) => {
+    const users = await User.findAll({ attributes: { exclude: 'password' } })
+    res.json(users)
+}
+
+const registerUser = async (req, res) => {
+    const { firstName, lastName, email, password } = req.body
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword
+    })
+    res.json(user)
+}
+
+const login = async (req, res) => {
+    const { email, password } = req.body
+    const user = await User.findOne({
+        where: {email}
+    })
+    if (!user) return res.status(400).json({ message: 'Usuario no encontrado' })
+    const compare = await bcrypt.compare(password, user.password);
+    if (!compare) return res.status(400).json({ message: 'Usuario o contraseña incorrecta' })
+
+    const token = jwt.sign({ id: user.id, email: user.email }, SECRET, { expiresIn: '8h' });
+
+    res.json({ token })
+}
+
+
+const me = async (req, res) => {
+    const user = await User.findByPk(req.user.id, {
+        attributes: { exclude: 'password' }
+    })
+    res.json(user)
+
+}
+
+module.exports = {
+    getUsers,
+    registerUser,
+    login,
+    me
+}

@@ -1,0 +1,58 @@
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import { useEffect } from 'react';
+import axios from 'axios'
+import { useState } from 'react';
+function UserList() {
+    const [users, setUsers] = useState([])
+    const [loading, setLoading] = useState(false)
+
+
+
+    useEffect(() => {
+        fetchUsers()
+    }, [])
+    const fetchUsers = async () => {
+        setLoading(true)
+
+        await new Promise((resolve) => setTimeout(resolve, 2000))
+
+        try {
+            const token = localStorage.getItem('token')
+            const response = await axios.get('http://localhost:3000/users', {
+                headers: {
+                    authorization: token
+                }
+            })
+            setUsers(response.data)
+
+        }
+        catch (error) {
+            alert("Debes estar logueado")
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <>
+            <h2>Usuarios</h2>
+
+            {loading ? (
+                <CircularProgress size={30} />
+            ) : users.length !== 0 ? (
+                <ul>
+                    {users.map((user) => (
+                        <li key={user.id}>
+                            {user.firstName} - {user.lastName}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <h2>Debes estar logueado</h2>
+            )}
+        </>
+    )
+}
+
+export default UserList
