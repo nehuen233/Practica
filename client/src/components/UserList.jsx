@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress'; //ejercicio 5 -->  Indicador de carga
 import { useEffect } from 'react';
 import axios from 'axios'
 import { useState } from 'react';
@@ -38,6 +38,8 @@ function UserList() {
         <>
             <h2>Usuarios</h2>
 
+            <button variant="contained" onClick={fetchUsers} disabled={loading}></button>
+
             {loading ? (
                 <CircularProgress size={30} />
             ) : users.length !== 0 ? (
@@ -49,7 +51,7 @@ function UserList() {
                     ))}
                 </ul>
             ) : (
-                <h2>Debes estar logueado</h2>
+                <h2></h2>
             )}
         </>
     )
