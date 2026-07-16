@@ -25,7 +25,7 @@ function Register() {
       if (password.length < 6) {
         alert("La contraseña debe ser de 6 caracteres")
         return
-      }
+      } //condicion de caracteres en password
 
       const response = await axios.post('http://localhost:3000/users', {
         password,
@@ -38,7 +38,7 @@ function Register() {
       setEmail('')
       setPassword('')
       setFirstName('')
-      setLastName('')
+      setLastName('') //esto hace que los espacios se limpien solos
 
       console.log(response.data)
       alert('Usuario registrado')
