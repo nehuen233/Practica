@@ -1,58 +1,90 @@
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress'; //ejercicio 5 -->  Indicador de carga
-import { useEffect } from 'react'; 
+import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
+import Avatar from '@mui/material/Avatar'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import TextField from '@mui/material/TextField'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useState } from 'react';
+
 function UserList() {
     const [users, setUsers] = useState([])
-    const [loading, setLoading] = useState(false)
-
-
+    const [loading, setLoading] = useState(true)
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         fetchUsers()
     }, [])
+
     const fetchUsers = async () => {
         setLoading(true)
 
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-
         try {
+            // Solo para probar el spinner; eliminar luego.
+            // await new Promise((resolve) => setTimeout(resolve, 2000))
+
             const token = localStorage.getItem('token')
+
             const response = await axios.get('http://localhost:3000/users', {
                 headers: {
                     authorization: token
                 }
             })
-            setUsers(response.data)
 
-        }
-        catch (error) {
-            alert("Debes estar logueado")
+            setUsers(response.data)
+        } catch (error) {
+            alert('Debes estar logueado')
         } finally {
             setLoading(false)
         }
     }
 
+    const filteredUsers = users.filter((user) => {
+        const text =
+            `${user.firstName} ${user.lastName} ${user.email}`.toLowerCase()
+
+        return text.includes(search.toLowerCase())
+    })
+
     return (
         <>
             <h2>Usuarios</h2>
-            
-            <button variant="contained" onClick={fetchUsers} disabled={loading} color='info'></button>  
-            <h4>actualizar lista</h4>
+
+            <Button
+                variant="contained"
+                color="info"
+                onClick={fetchUsers}
+                disabled={loading}
+            >
+                Actualizar lista
+            </Button>
+
+            <br />
+            <br />
+
+            <TextField
+                label="Buscar usuario"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+            />
 
             {loading ? (
                 <CircularProgress size={30} />
-            ) : users.length !== 0 ? (
-                <ul>
-                    {users.map((user) => (
-                        <li key={user.id}>
-                            {user.firstName} - {user.lastName}
-                        </li>
-                    ))}
-                </ul>
+            ) : filteredUsers.length !== 0 ? (
+                filteredUsers.map((user) => (
+                    <Card key={user.id} sx={{ margin: 2 }}>
+                        <CardContent>
+                            <Avatar>
+                                {user.firstName[0]}{user.lastName[0]}
+                            </Avatar>
+
+                            <h3>{user.firstName} {user.lastName}</h3>
+                            <p>{user.email}</p>
+                        </CardContent>
+                    </Card>
+                ))
             ) : (
-                <h2></h2>
+                <h3>No se encontraron usuarios</h3>
             )}
         </>
     )
