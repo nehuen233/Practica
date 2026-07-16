@@ -8,6 +8,7 @@ function Register() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [loading, setLoading] = useState(false)
+    const [showPassword, SetshowPassword] = useState(false) // --> Estado para esconder contraseña
 
    const registerUser = async () => {
   if (!email || !password || !firstName || !lastName) {
@@ -27,6 +28,12 @@ function Register() {
       lastName
     })
 
+    alert("Usuario registrado correctamente")
+    setEmail('')
+    setPassword('')
+    setFirstName('')
+    setLastName('')
+
     console.log(response.data)
     alert('Usuario registrado')
   } catch (error) {
@@ -38,11 +45,12 @@ function Register() {
     return (
         <>
             <h2>Register</h2>
-            <input type="text" placeholder="email" onChange={(event) => setEmail(event.target.value)} />
-            <input type="text" placeholder="contraseña" onChange={(event) => setPassword(event.target.value)} />
-            <input type="text" placeholder="nombre" onChange={(event) => setFirstName(event.target.value)} />
-            <input type="text" placeholder="apellido" onChange={(event) => setLastName(event.target.value)} />
-            <Button variant="contained" onClick={registerUser} disabled={loading}>{loading ? <CircularProgress size={23} color="inherit" /> : 'Register'}</Button>
+            <input type="email" placeholder="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+            <input type={showPassword ? 'text' : 'password'} placeholder="contraseña" value={password} onChange={(event) => setPassword(event.target.value)} />
+            <input type="text" placeholder="nombre" value={firstName} onChange={(event) => setFirstName(event.target.value)} />
+            <input type="text" placeholder="apellido" value={lastName} onChange={(event) => setLastName(event.target.value)} />
+            <button type='button' color ={showPassword ? 'warning' : 'primary'} onClick={() => SetshowPassword(!showPassword)} >  {showPassword ? 'Ocultar' : 'Mostrar'} contraseña  </button>
+            <Button variant="contained" onClick={registerUser} disabled={loading}>{loading ? <CircularProgress size={23} color="primary" /> : 'Register'}</Button>
         </>
     )
 }

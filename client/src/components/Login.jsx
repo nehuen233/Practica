@@ -6,6 +6,7 @@ function Login() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
+    const [showPassword, SetshowPassword] = useState(false)
 
     const fetchLogin = async () => {
         setLoading(true)
@@ -19,10 +20,11 @@ function Login() {
             })
 
             alert('Bienvenido')
+            setPassword('')
             localStorage.setItem('token', response.data.token)
         }
         catch (error) {
-            alert("No se pudo iniciar sesión")
+            alert(error.response?.data?.message || 'No se pudo iniciar sesión')
         } finally {
             setLoading(false)
         }
@@ -32,8 +34,9 @@ function Login() {
         <>
             <h2>Login</h2>
             <input type="text" placeholder="email" onChange={(event) => setEmail(event.target.value)} />
-            <input type="text" placeholder="contraseña" onChange={(event) => setPassword(event.target.value)} />
-            <Button variant="contained" onClick={fetchLogin} disabled={loading}>{loading ? <CircularProgress size={23} color="blue" /> : 'Login'}</Button>
+            <input type={showPassword ? 'text' : 'password'} placeholder="contraseña" value={password} onChange={(event) => setPassword(event.target.value)} />
+            <button type='button' color={showPassword ? 'warning' : 'primary'} onClick={() => SetshowPassword(!showPassword)} >  {showPassword ? 'Ocultar' : 'Mostrar'} contraseña  </button>
+            <Button variant="contained" onClick={fetchLogin} disabled={loading}>{loading ? <CircularProgress size={23} color="success" /> : 'Login'}</Button>
         </>
     )
 }
