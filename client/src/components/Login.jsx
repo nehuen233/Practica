@@ -40,6 +40,7 @@ function Login({ onLogin }) {
             <Button variant="contained" onClick={fetchLogin} disabled={loading}>{loading ? <CircularProgress size={23} color="success" /> : 'Login'}</Button>
         </>
     )
+
 }
 
 export default Login

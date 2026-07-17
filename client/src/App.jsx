@@ -4,6 +4,7 @@ import './App.css'
 import Login from './components/Login'
 import Register from './components/Register'
 import UserList from './components/UserList'
+import Character from './components/Characters'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <>
+      <Character />
       {isLoggedIn ? (
         <>
           <UserList />

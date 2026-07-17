@@ -16,7 +16,7 @@ function Register() {
       return
     }
 
-    setLoading(true)
+    (true)
 
         // recordar poner el condicial de limite antes del AXIOS
     try {
